@@ -8,8 +8,8 @@ const router = require('./routes/routes');
 
 const app = express();
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/dist', express.static(path.join(__dirname, 'dist')));
+app.use('/assets', express.static(path.join(__dirname, './assets')));
+app.use('/dist', express.static(path.join(__dirname, './dist')));
 app.use('/api', router);
 
 app.get('/', async (req, res, next) => {
