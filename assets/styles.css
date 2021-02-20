@@ -1,0 +1,7 @@
+body {
+  background-color: rgb(92, 0, 179);
+  color: white;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
