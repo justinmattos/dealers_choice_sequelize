@@ -241,11 +241,83 @@ const syncAndSeed = async () => {
     );
     await Promise.all([playstation5.save(), nintendoSwitch.save(), pc.save()]);
 
-    await GameCopy.addGame({
-      gamer: alexPlaysGames,
-      game: breathOfTheWild,
-      console: nintendoSwitch,
-    });
+    const gameCopies = [
+      {
+        gamer: composerBeforeSunset,
+        game: breathOfTheWild,
+        console: nintendoSwitch,
+      },
+      {
+        gamer: alexPlaysGames,
+        game: breathOfTheWild,
+        console: nintendoSwitch,
+      },
+      {
+        gamer: randomGamerGirl,
+        game: breathOfTheWild,
+        console: nintendoSwitch,
+      },
+      {
+        gamer: randomGamerGuy,
+        game: breathOfTheWild,
+        console: nintendoSwitch,
+      },
+      {
+        gamer: defaultUsername,
+        game: breathOfTheWild,
+        console: nintendoSwitch,
+      },
+      {
+        gamer: alexPlaysGames,
+        game: hades,
+        console: nintendoSwitch,
+      },
+      {
+        gamer: alexPlaysGames,
+        game: animalCrossingNH,
+        console: nintendoSwitch,
+      },
+      {
+        gamer: randomGamerGirl,
+        game: leagueOfLegends,
+        console: pc,
+      },
+      {
+        gamer: randomGamerGuy,
+        game: leagueOfLegends,
+        console: pc,
+      },
+      {
+        gamer: randomGamerGirl,
+        game: rocketLeague,
+        console: pc,
+      },
+      {
+        gamer: randomGamerGuy,
+        game: rocketLeague,
+        console: pc,
+      },
+      {
+        gamer: pl4y3r0n3,
+        game: leagueOfLegends,
+        console: pc,
+      },
+      {
+        gamer: defaultUsername,
+        game: rocketLeague,
+        console: playstation5,
+      },
+      {
+        gamer: defaultUsername,
+        game: animalCrossingNH,
+        console: nintendoSwitch,
+      },
+    ];
+    await Promise.all(
+      gameCopies.map(({ gamer, game, console }) =>
+        GameCopy.addGame({ gamer: gamer, game: game, console: console })
+      )
+    );
   } catch (err) {
     console.log(err);
   }
