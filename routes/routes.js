@@ -15,7 +15,7 @@ router.get('/gamers/:id', async (req, res, next) => {
   try {
     res.send(
       await Gamer.findByPk(req.params.id, {
-        include: [{ model: Gamer, as: 'friend1' }, { model: GameCopy }],
+        include: { all: true, nested: true },
       })
     );
   } catch (err) {
@@ -25,7 +25,7 @@ router.get('/gamers/:id', async (req, res, next) => {
 
 router.get('/games', async (req, res, next) => {
   try {
-    res.send(await Game.findAll());
+    res.send(await Game.findAll({ include: { all: true } }));
   } catch (err) {
     next(err);
   }
