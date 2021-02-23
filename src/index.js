@@ -20,6 +20,7 @@ const content = document.querySelector('#content'),
 let gamerList, gamesList;
 
 const createAndAppend = ({ parent, tag, innerHTML, id, classArray }) => {
+  //helper func creates a DOM node, adds info and appends as child to parent node
   const newEl = document.createElement(tag);
   if (innerHTML) newEl.innerHTML = innerHTML;
   if (id) newEl.id = id;
@@ -30,6 +31,13 @@ const createAndAppend = ({ parent, tag, innerHTML, id, classArray }) => {
   }
   parent.appendChild(newEl);
   return newEl;
+};
+
+const alphaSortByUsername = (a, b) => {
+  //callback function for sorting lists alphabetically by username, ignoring case
+  if (a.username.toLowerCase() > b.username.toLowerCase()) return 1;
+  else if (a.username.toLowerCase() < b.username.toLowerCase()) return -1;
+  else return 0;
 };
 
 const renderGamers = (gamers) => {
@@ -66,26 +74,40 @@ const renderGameList = (games) => {
   }
 };
 
+const renderContentDivsAndHeaders = (pageType) => {
+  //helper func that creates two main divs and their h2 titles, returning those divs in array
+  let headerA, headerB;
+  switch (pageType) {
+    case 'main':
+      headerA = 'Cool Gamers';
+      headerB = 'Games They Play';
+      break;
+    case 'gamer':
+      headerA = 'Gamer Details';
+      headerB = 'Games They Play';
+      break;
+    case 'game':
+      headerA = 'Game Details';
+      headerB = 'Played By';
+      break;
+  }
+  const [divA, divB] = new Array(2)
+    .fill('')
+    .map(() => createAndAppend({ parent: content, tag: 'div' }));
+  [
+    { parent: divA, innerHTML: headerA },
+    { parent: divB, innerHTML: headerB },
+  ].map(({ parent, innerHTML }) =>
+    createAndAppend({ parent: parent, tag: 'h2', innerHTML: innerHTML })
+  );
+  return [divA, divB];
+};
+
 const renderMain = async () => {
   content.innerHTML = '';
   nav.innerHTML = '';
   pageTitle.innerHTML = 'Welcome Gamers!';
-  const [gamerDiv, gamesDiv] = new Array(2).fill('').map(() =>
-    createAndAppend({
-      parent: content,
-      tag: 'div',
-    })
-  );
-  [
-    { parent: gamerDiv, innerHTML: 'Cool Gamers' },
-    { parent: gamesDiv, innerHTML: 'Games They Play' },
-  ].map(({ parent, innerHTML }) =>
-    createAndAppend({
-      parent: parent,
-      tag: 'h2',
-      innerHTML: innerHTML,
-    })
-  );
+  const [gamerDiv, gamesDiv] = renderContentDivsAndHeaders('main');
   [gamerList, gamesList] = [
     { parent: gamerDiv, classArray: ['center-list'] },
     { parent: gamesDiv, classArray: ['span-list'] },
@@ -98,11 +120,7 @@ const renderMain = async () => {
   );
   try {
     const gamers = (await axios.get('/api/gamers')).data;
-    gamers.sort((a, b) => {
-      if (a.username.toLowerCase() > b.username.toLowerCase()) return 1;
-      else if (a.username.toLowerCase() < b.username.toLowerCase()) return -1;
-      else return 0;
-    });
+    gamers.sort(alphaSortByUsername);
     renderGamers(gamers);
     const games = (await axios.get('/api/games')).data;
     games.sort((a, b) => b.game_copies.length - a.game_copies.length);
@@ -118,15 +136,7 @@ const renderUserDetail = async (gamerId) => {
   try {
     const gamer = (await axios.get(`/api/gamers/${gamerId}`)).data;
     pageTitle.innerHTML = `${gamer.username}`;
-    const userDiv = createAndAppend({
-      parent: content,
-      tag: 'div',
-    });
-    createAndAppend({
-      parent: userDiv,
-      tag: 'h2',
-      innerHTML: 'Gamer Details',
-    });
+    const [userDiv, gameDiv] = renderContentDivsAndHeaders('gamer');
     const userUl = createAndAppend({
       parent: userDiv,
       tag: 'ul',
@@ -153,11 +163,7 @@ const renderUserDetail = async (gamerId) => {
         tag: 'ul',
       });
       const friends = gamer.friend2;
-      friends.sort((a, b) => {
-        if (a.username.toLowerCase() > b.username.toLowerCase()) return 1;
-        else if (a.username.toLowerCase() < b.username.toLowerCase()) return -1;
-        else return 0;
-      });
+      friends.sort(alphaSortByUsername);
       for (const friend of friends) {
         const friendLi = createAndAppend({
           parent: friendUl,
@@ -168,15 +174,6 @@ const renderUserDetail = async (gamerId) => {
         });
       }
     }
-    const gameDiv = createAndAppend({
-      parent: content,
-      tag: 'div',
-    });
-    createAndAppend({
-      parent: gameDiv,
-      tag: 'h2',
-      innerHTML: 'Games They Play',
-    });
     const gameUl = createAndAppend({
       parent: gameDiv,
       tag: 'ul',
@@ -212,15 +209,7 @@ const renderGameDetail = async (gameId) => {
     const game = (await axios.get(`/api/games/${gameId}`)).data;
     const releaseDate = new Date(game.releaseDate);
     pageTitle.innerHTML = game.name;
-    const detailDiv = createAndAppend({
-      parent: content,
-      tag: 'div',
-    });
-    createAndAppend({
-      parent: detailDiv,
-      tag: 'h2',
-      innerHTML: 'Game Details',
-    });
+    const [detailDiv, gamerDiv] = renderContentDivsAndHeaders('game');
     const detailUl = createAndAppend({
       parent: detailDiv,
       tag: 'ul',
@@ -237,15 +226,6 @@ const renderGameDetail = async (gameId) => {
       parent: detailUl,
       tag: 'li',
       innerHTML: `Total Players: ${game.game_copies.length}`,
-    });
-    const gamerDiv = createAndAppend({
-      parent: content,
-      tag: 'div',
-    });
-    createAndAppend({
-      parent: gamerDiv,
-      tag: 'h2',
-      innerHTML: 'Played By',
     });
     const gamerUl = createAndAppend({
       parent: gamerDiv,
