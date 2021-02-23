@@ -31,6 +31,18 @@ router.get('/games', async (req, res, next) => {
   }
 });
 
+router.get('/games/:id', async (req, res, next) => {
+  try {
+    res.send(
+      await Game.findByPk(req.params.id, {
+        include: { all: true, nested: true },
+      })
+    );
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get('/consoles', async (req, res, next) => {
   try {
     res.send(await Console.findAll());

@@ -1,6 +1,6 @@
 body {
-  background-color: rgb(92, 0, 179);
-  color: white;
+  background-color: #2f2fa2;
+  color: #f64c72;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -11,15 +11,95 @@ body * {
   padding: 0;
 }
 
-body > div {
+h1 {
+  padding: 0 0 0.5em;
+}
+
+#content {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-body > div > div {
+#content > div {
   width: 50%;
   display: flex;
   flex-flow: column nowrap;
+  align-items: stretch;
+  border: solid white 2px;
+  border-radius: 14px;
+  margin: 4px;
+  padding: 0.5em 0.5em 1em;
+}
+
+#content h2 {
+  text-align: center;
+}
+
+nav {
+  position: absolute;
+  align-self: flex-start;
+  color: rgb(153, 218, 218);
+}
+
+nav:hover {
+  color: rgb(218, 218, 218);
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+ul.center-list {
+  display: flex;
+  flex-flow: column nowrap;
   align-items: center;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  padding: 0.5em 0 0;
+}
+
+li span:first-child {
+  width: 55%;
+  text-align: end;
+}
+
+li span:last-child {
+  width: 45%;
+  text-align: start;
+}
+
+.friend-list {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.friend-list > ul {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.gamer {
+  color: rgb(153, 218, 218);
+}
+
+.gamer:hover {
+  color: rgb(218, 218, 218);
+  cursor: pointer;
+}
+
+.game {
+  color: rgb(153, 218, 218);
+}
+
+.game:hover {
+  color: rgb(218, 218, 218);
+  cursor: pointer;
 }

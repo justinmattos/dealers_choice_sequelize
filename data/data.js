@@ -174,7 +174,7 @@ const games = [
     releaseDate: 'October 27, 2009',
   },
   {
-    name: 'Animal Crossing: New Horizons',
+    name: 'AC: New Horizons',
     releaseDate: 'March 20, 2020',
   },
   {
@@ -217,6 +217,11 @@ const syncAndSeed = async () => {
       pl4y3r0n3.save(),
     ]);
     await Friendship.linkFriends(randomGamerGirl, randomGamerGuy);
+    await Friendship.linkFriends(defaultUsername, randomGamerGirl);
+    await Friendship.linkFriends(defaultUsername, randomGamerGuy);
+    await Friendship.linkFriends(defaultUsername, alexPlaysGames);
+    await Friendship.linkFriends(pl4y3r0n3, randomGamerGirl);
+    await Friendship.linkFriends(pl4y3r0n3, randomGamerGuy);
 
     const [
       breathOfTheWild,
