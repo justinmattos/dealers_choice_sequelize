@@ -13,7 +13,7 @@ Gamer.init(
       primaryKey: true,
     },
     username: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(20),
       allowNull: false,
       unique: true,
       validate: {
@@ -21,14 +21,14 @@ Gamer.init(
       },
     },
     firstName: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(20),
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
     lastName: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(30),
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -47,7 +47,7 @@ Game.init(
       primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(30),
       allowNull: false,
       unique: true,
       validate: {

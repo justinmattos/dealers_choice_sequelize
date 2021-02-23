@@ -1,11 +1,28 @@
 const {
   models: { Gamer, Game, GameCopy, Console, Friendship },
 } = require('../data/data');
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
+
+router.use(express.json());
 
 router.get('/gamers', async (req, res, next) => {
   try {
     res.send(await Gamer.findAll());
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/gamers', async (req, res, next) => {
+  try {
+    const newGamer = new Gamer({
+      username: req.body.username,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+    });
+    await newGamer.save();
+    res.status(201).send(newGamer.id);
   } catch (err) {
     next(err);
   }
@@ -23,9 +40,26 @@ router.get('/gamers/:id', async (req, res, next) => {
   }
 });
 
+router.post('/gamers/:id/addFriend', async (req, res, next) => {
+  //need to define this post route;
+});
+
 router.get('/games', async (req, res, next) => {
   try {
     res.send(await Game.findAll({ include: { all: true } }));
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/games', async (req, res, next) => {
+  try {
+    const newGame = await new Game({
+      name: req.body.gameName,
+      releaseDate: req.body.releaseDate,
+    });
+    await newGame.save();
+    res.status(201).send(newGame.id);
   } catch (err) {
     next(err);
   }
