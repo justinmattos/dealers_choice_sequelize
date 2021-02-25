@@ -40,8 +40,17 @@ router.get('/gamers/:id', async (req, res, next) => {
   }
 });
 
-router.post('/gamers/:id/addFriend', async (req, res, next) => {
-  //need to define this post route;
+router.post('/gamer/addFriend/:id', async (req, res, next) => {
+  const { id } = req.params;
+  const { friendId } = req.body;
+  Promise.all([Gamer.findByPk(id), Gamer.findByPk(friendId)])
+    .then(([gamer, friend]) => {
+      return Friendship.linkFriends(gamer, friend);
+    })
+    .then(() => {
+      res.status(201).send();
+    })
+    .catch((err) => next(err));
 });
 
 router.get('/games', async (req, res, next) => {
